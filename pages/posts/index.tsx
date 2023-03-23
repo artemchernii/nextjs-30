@@ -1,4 +1,6 @@
 import { Post, getAllPosts } from "@/services/posts";
+import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const styles = {
@@ -8,6 +10,7 @@ const styles = {
 	borderRadius: "10px",
 	color: "#000",
 	padding: "10px",
+	margin: "10px 5px",
 };
 interface PostsType {
 	posts: Post[];
@@ -29,6 +32,9 @@ export default function Main({ posts }: PostsType) {
 
 	return (
 		<>
+			<Head>
+				<title>All posts</title>
+			</Head>
 			<h1>Posts</h1>
 			<input
 				type="text"
@@ -36,15 +42,17 @@ export default function Main({ posts }: PostsType) {
 				value={filterData}
 				onChange={changeFilterData}
 			/>
-			<div>
+			<div className="wrapper-flex">
 				{posts
 					.filter(({ title }) => title.includes(filterData))
 					.map((post) => {
 						return (
-							<div key={post.id} style={styles}>
-								<h3>{post.title}</h3>
-								<p>{post.body}</p>
-							</div>
+							<Link key={post.id} href={`/posts/${post.id}`}>
+								<div style={styles}>
+									<h3>{post.title}</h3>
+									<p>{post.body}</p>
+								</div>
+							</Link>
 						);
 					})}
 			</div>
